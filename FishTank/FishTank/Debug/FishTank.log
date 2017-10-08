@@ -1,0 +1,5 @@
+﻿  FishTank.cpp
+c:\users\zabey\documents\visual studio 2015\projects\fishtank\fishtank\fishtank.cpp(231): warning C4101: 'Stream': unreferenced local variable
+c:\users\zabey\documents\visual studio 2015\projects\fishtank\fishtank\fishtank.cpp(229): warning C4101: 'BuffSize': unreferenced local variable
+  FishTank.vcxproj -> C:\Users\Zabey\Documents\Visual Studio 2015\Projects\FishTank\Debug\FishTank.exe
+  FishTank.vcxproj -> C:\Users\Zabey\Documents\Visual Studio 2015\Projects\FishTank\Debug\FishTank.pdb (Partial PDB)
