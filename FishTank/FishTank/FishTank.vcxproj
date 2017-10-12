@@ -119,6 +119,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FishTank.cpp" />
+    <ClCompile Include="list.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="defines.h" />
+    <ClInclude Include="fish.h" />
+    <ClInclude Include="fishlist.h" />
+    <ClInclude Include="frame.h" />
+    <ClInclude Include="list.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
