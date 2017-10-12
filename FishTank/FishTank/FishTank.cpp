@@ -1,153 +1,24 @@
-/****************************************************************************\
-*                                                                            *
-*  FishHC.c                                                                  *
-*                                                                            *
-*  High color Fastgraph fish tank.                                           *
-*                                                                            *
-\****************************************************************************/
-
 #include "FGWIN.H"
 #include <io.h>
 #include <malloc.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "defines.h"
+#include "frame.h"
+#include "fish.h"
+#include "fishlist.h"
+#include "list.h"
+//#include"defines.h"
 
-#define vbWidth  1280
-#define vbHeight 720
-#define vbDepth  16
+//int hWheel;      // water wheel virtual buffer
+//EDITED by HellWiz
 
-#define RIGHT 0
-#define LEFT  1
-
-#define UP  -1
-#define DOWN 1
-
-// generate a random integer between 2 numbers
-#define IRAND(min,max) ((rand()%((max)-(min)+1))+(min))
-
-// location of each fish frame as stored in a PCX file
-typedef struct _frame
-{
-	int x1; int x2; int y1; int y2;
-} FRAME;
-
-// type FISH defines each species of fish
-typedef struct _fish
-{
-	char  *FileName;
-	int   Direction;
-	int   nFrames;
-	int   FrameDelay;
-	FRAME Frame[4];
-	int   FishWidth[4];
-	int   FishHeight[4];
-	short *Bitmap[4];
-} FISH;
-
-FISH fish[6] =
-{ {
-		"Images/BlueDamsel.pcx", LEFT, 4, 4,
-		79,232,218,281,
-		270,423,219,281,
-		457,610,219,281,
-		73,226,334,396,
-		0,0,0,0,
-		0,0,0,0,
-		NULL,NULL,NULL,NULL
-	},{
-		"Images/BlueTang.pcx", RIGHT, 4, 4,
-		492,635,200,275,
-		325,468,200,275,
-		165,308,200,275,
-		1,144,199,274,
-		0,0,0,0,
-		0,0,0,0,
-		NULL,NULL,NULL,NULL
-	},{
-		"Images/Butterfly.pcx", RIGHT, 4, 4,
-		244,397,191,286,
-		41,194,191,286,
-		41,194,337,433,
-		244,397,338,433,
-		0,0,0,0,
-		0,0,0,0,
-		NULL,NULL,NULL,NULL
-	},{
-		"Images/Gudgeon.pcx", RIGHT, 4, 4,
-		23,203,198,280,
-		231,411,195,280,
-		438,618,195,280,
-		23,203,340,425,
-		0,0,0,0,
-		0,0,0,0,
-		NULL,NULL,NULL,NULL
-	},{
-		"Images/Killifish.pcx", RIGHT, 4,  4,
-		133,285,153,205,
-		350,502,153,205,
-		136,288,273,324,
-		350,502,272,324,
-		0,0,0,0,
-		0,0,0,0,
-		NULL,NULL,NULL,NULL
-	},{
-		"Images/SeaHorse.pcx", LEFT, 3, 4,
-		388,435,205,293,
-		295,342,205,293,
-		199,246,205,293,
-		0,0,0,0,
-		0,0,0,0,
-		0,0,0,0,
-		NULL,NULL,NULL,NULL
-	} };
-// EDITED by ROFLail_X_GOD
-
-// forward declaration
-struct _FishList;
-typedef struct _FishList FISHLIST;
-
-// Each fish is stored as a sprite in a linked list
-typedef struct _FishList
-{
-	FISHLIST *Next;
-	int FishNum;
-	int x;
-	int y;
-	int xMin;
-	int xMax;
-	int xInc;
-	int yMin;
-	int yMax;
-	int yInc;
-	int Frame;
-	int xDir;
-	int yDir;
-	int FishDir;
-	int FrameCounter;
-} FISHLIST;
-
-FISHLIST *Head;
-FISHLIST *Tail;
+// buffers required for water wheel flic file
+//char WheelContext[20];
+//EDITED by HellWiz
 
 int hBackground; // background virtual buffer
 int hWork;       // workspace virtual buffer
-				 //int hWheel;      // water wheel virtual buffer
-				 //EDITED by HellWiz
-
-				 // buffers required for water wheel flic file
-				 //char WheelContext[20];
-				 //EDITED by HellWiz
-char *ImageBuf;
-
-int Counter = 0;
-int BubbleFrame = 0;
-
-// function declarations
-void AnimateFish(void);
-void GetFish(int);
-void InitFish(void);
-
-LRESULT CALLBACK WindowProc(HWND, UINT, WPARAM, LPARAM);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	PSTR szCmdParam, int iCmdShow)
@@ -182,17 +53,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		NULL,                    // window menu handle
 		hInstance,               // program instance handle
 		NULL);                   // creation parameters
-								 // EDITED by ROFLail_X_GOD
+	// EDITED by ROFLail_X_GOD
 
 	ShowWindow(hWnd, iCmdShow);
 	UpdateWindow(hWnd);
 
 	PlaySound("Sounds/BackGroundMusic.wav", NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
 	//ADDED by ROFLail_X_GOD
-
-	// The message loop processes entries placed in the message queue.
-	// When no message is ready, call AnimateFish() to perform one frame
-	// of animation.
 
 	while (TRUE)
 	{
@@ -214,15 +81,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	return msg.wParam;
 }
 
-/****************************************************************************\
-*                                                                            *
-*  WindowProc()                                                              *
-*                                                                            *
-\****************************************************************************/
-
-HDC      hDC;
-HPALETTE hPal;
-
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps;
@@ -241,7 +99,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		SetTimer(hWnd, 1, 16, NULL);
 		ShowWindow(hWnd, SW_SHOWNORMAL);
 
-		// set 640x480 display resolution
+		// set display resolution
 		if (fg_modetest(vbWidth, vbHeight, fg_colors()) != 0)
 		{
 			MessageBox(hWnd, "Cannot set desktop resolution.", "Error", MB_OK | MB_ICONSTOP);
@@ -264,10 +122,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 		// get all the fish and put them into a linked list
 		fg_vbopen(hWork);
+		mainlist.init(hBackground, hWork);
+		/*
+		fg_vbopen(hWork);
 		for (i = 0; i < 6; i++)
 			GetFish(i);
 		InitFish();
-
+		*/
 		// load the water wheel flic file into the fg_imagebuf() buffer
 		/*fg_flicopen("Wheel.flc",WheelContext);
 		fg_flicdone(WheelContext);
@@ -303,7 +164,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		return 0;
 
 	case WM_TIMER:
-		AnimateFish();
+		mainlist.AnimateFish(hBackground, hWork);
 		return 0;
 
 	case WM_KEYDOWN:
@@ -341,13 +202,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hWnd, iMsg, wParam, lParam);
 }
 
-/****************************************************************************\
-*                                                                            *
-*  AnimateFish()                                                             *
-*                                                                            *
-\****************************************************************************/
-
-void AnimateFish(void)
+/*void AnimateFish(void)
 {
 	FISHLIST *Node;
 	register int i;
@@ -383,7 +238,7 @@ void AnimateFish(void)
 	fg_flicplay(WheelContext,1,5);
 	BubbleFrame = 0;
 	}
-	fg_vbcopy(0,185,0,152,vbWidth-186,vbHeight-1,hWheel,hWork);*/
+	fg_vbcopy(0,185,0,152,vbWidth-186,vbHeight-1,hWheel,hWork);//
 	//EDITED by HellWiz
 
 	// create and display a translucent bubble moving up
@@ -481,15 +336,9 @@ void AnimateFish(void)
 
 	// display the frame we just constructed
 	fg_vbpaste(0, vbWidth - 1, 0, vbHeight - 1, 0, vbHeight - 1);
-}
+}*/
 
-/****************************************************************************\
-*                                                                            *
-*  GetFish()                                                                 *
-*                                                                            *
-\****************************************************************************/
-
-void GetFish(int FishNum)
+/*void GetFish(int FishNum)
 {
 	register int i;
 
@@ -511,14 +360,8 @@ void GetFish(int FishNum)
 		fg_getdcb(fish[FishNum].Bitmap[i],
 			fish[FishNum].FishWidth[i], fish[FishNum].FishHeight[i]);
 	}
-}
-
-/****************************************************************************\
-*                                                                            *
-*  InitFish()                                                                *
-*                                                                            *
-\****************************************************************************/
-
+}*/
+/*
 void InitFish(void)
 {
 	FISHLIST *Node;
@@ -565,3 +408,4 @@ void InitFish(void)
 		}
 	}
 }
+*/
