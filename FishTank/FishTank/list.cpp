@@ -14,6 +14,12 @@ void LIST::init(int hBackground, int hWork){
 	head = (FISHLIST *)NULL;
 	tail = (FISHLIST *)NULL;
 
+	// copy hungerbar image to buffer
+	fg_showpcx("Images/HungerBar.pcx", 0);
+	HungerBarBuf = (short *)malloc(fg_imagesiz(100, 10));
+	fg_move(0, 9);
+	fg_getdcb(HungerBarBuf, 100, 10);
+
 	// choose a random number of fish
 	srand(fg_getclock());
 	nNodes = IRAND(6, 12);
@@ -94,6 +100,7 @@ void LIST::AnimateFish(int hBackground, int hWork)
 	register int i;
 	int nRows, y;
 	int r, g, b;
+	short *HungerBar = (short *)malloc(fg_imagesiz(100, 10));
 
 	short Bubble[14 * 14];
 	static char BubbleMask[14 * 14] = {
@@ -199,6 +206,11 @@ void LIST::AnimateFish(int hBackground, int hWork)
 			Node->yMin = IRAND(60, 400);
 			Node->yMax = IRAND(Node->yMin, vbHeight - 1);
 		}
+
+		// add hungerbar above every fish and animate it
+		fg_cutdcb(HungerBarBuf, HungerBar, 100, 0, 0, 20, 10);
+		fg_move(Node->x + fish[Node->FishNum].FishWidth[0]/2 - 50, Node->y - fish[Node->FishNum].FishHeight[0] - 10);
+		fg_clipdcb(HungerBar, 20, 10);
 
 		// increment fish frame (swish tail slowly)
 		Node->FrameCounter++;

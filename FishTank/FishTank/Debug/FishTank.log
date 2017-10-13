@@ -1,8 +1,3 @@
 ﻿  list.cpp
-  FishTank.cpp
-c:\users\антон\documents\github\battlefish\fishtank\fishtank\fishtank.cpp(89): warning C4101: Stream: неиспользованная локальная переменная
-c:\users\антон\documents\github\battlefish\fishtank\fishtank\fishtank.cpp(87): warning C4101: BuffSize: неиспользованная локальная переменная
-c:\users\антон\documents\github\battlefish\fishtank\fishtank\fishtank.cpp(90): warning C4101: i: неиспользованная локальная переменная
-  Создание кода...
-  FishTank.vcxproj -> C:\Users\Антон\Documents\GitHub\BattleFish\FishTank\Debug\FishTank.exe
-  FishTank.vcxproj -> C:\Users\Антон\Documents\GitHub\BattleFish\FishTank\Debug\FishTank.pdb (Partial PDB)
+  FishTank.vcxproj -> C:\Users\Zabey\Documents\Visual Studio 2015\Projects\BattleFish\FishTank\Debug\FishTank.exe
+  FishTank.vcxproj -> C:\Users\Zabey\Documents\Visual Studio 2015\Projects\BattleFish\FishTank\Debug\FishTank.pdb (Partial PDB)
