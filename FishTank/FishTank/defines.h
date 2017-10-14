@@ -36,7 +36,8 @@ static FISH fish[6] =
 		73,226,334,396,
 		0,0,0,0,
 		0,0,0,0,
-		NULL,NULL,NULL,NULL
+		NULL,NULL,NULL,NULL,
+		10000
 	},{
 		"Images/BlueTang.pcx", RIGHT, 4, 4,
 		492,635,200,275,
@@ -45,7 +46,8 @@ static FISH fish[6] =
 		1,144,199,274,
 		0,0,0,0,
 		0,0,0,0,
-		NULL,NULL,NULL,NULL
+		NULL,NULL,NULL,NULL,
+		10000
 	},{
 		"Images/Butterfly.pcx", RIGHT, 4, 4,
 		244,397,191,286,
@@ -54,7 +56,8 @@ static FISH fish[6] =
 		244,397,338,433,
 		0,0,0,0,
 		0,0,0,0,
-		NULL,NULL,NULL,NULL
+		NULL,NULL,NULL,NULL,
+		10000
 	},{
 		"Images/Gudgeon.pcx", RIGHT, 4, 4,
 		23,203,198,280,
@@ -63,7 +66,8 @@ static FISH fish[6] =
 		23,203,340,425,
 		0,0,0,0,
 		0,0,0,0,
-		NULL,NULL,NULL,NULL
+		NULL,NULL,NULL,NULL,
+		10000
 	},{
 		"Images/Killifish.pcx", RIGHT, 4,  4,
 		133,285,153,205,
@@ -72,7 +76,8 @@ static FISH fish[6] =
 		350,502,272,324,
 		0,0,0,0,
 		0,0,0,0,
-		NULL,NULL,NULL,NULL
+		NULL,NULL,NULL,NULL,
+		10000
 	},{
 		"Images/SeaHorse.pcx", LEFT, 3, 4,
 		388,435,205,293,
@@ -81,10 +86,12 @@ static FISH fish[6] =
 		0,0,0,0,
 		0,0,0,0,
 		0,0,0,0,
-		NULL,NULL,NULL,NULL
+		NULL,NULL,NULL,NULL,
+		10000
 	} };
 
 static char *ImageBuf;
+static short *HungerBarBuf;
 
 static int Counter = 0;
 static int BubbleFrame = 0;

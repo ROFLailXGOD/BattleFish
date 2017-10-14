@@ -12,4 +12,5 @@ public:
 	int   FishWidth[4];
 	int   FishHeight[4];
 	short *Bitmap[4];
+	int   MaxHunger;
 };
