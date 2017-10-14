@@ -57,7 +57,7 @@ static FISH fish[6] =
 		0,0,0,0,
 		0,0,0,0,
 		NULL,NULL,NULL,NULL,
-		10000
+		1000
 	},{
 		"Images/Gudgeon.pcx", RIGHT, 4, 4,
 		23,203,198,280,
@@ -87,7 +87,7 @@ static FISH fish[6] =
 		0,0,0,0,
 		0,0,0,0,
 		NULL,NULL,NULL,NULL,
-		10000
+		20000
 	} };
 
 static char *ImageBuf;
