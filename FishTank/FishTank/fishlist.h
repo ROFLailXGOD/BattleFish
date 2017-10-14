@@ -16,4 +16,5 @@ public:
 	int yDir;
 	int FishDir;
 	int FrameCounter;
+	int hunger;
 };
