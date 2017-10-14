@@ -48,6 +48,7 @@ void LIST::init(int hBackground, int hWork){
 		Node->yInc = IRAND(1, 4);
 		Node->Frame = IRAND(1, 2);
 		Node->FrameCounter = IRAND(0, 2);
+		Node->hunger = fish[Node->FishNum].MaxHunger;
 		if (head == (FISHLIST *)NULL)
 		{
 			head = Node;
@@ -211,6 +212,8 @@ void LIST::AnimateFish(int hBackground, int hWork)
 		fg_cutdcb(HungerBarBuf, HungerBar, 100, 0, 0, 20, 10);
 		fg_move(Node->x + fish[Node->FishNum].FishWidth[0]/2 - 50, Node->y - fish[Node->FishNum].FishHeight[0] - 10);
 		fg_clipdcb(HungerBar, 20, 10);
+		--(Node->hunger);
+		//if(Node->hunger <= 0){метод для удаления рыбы}
 
 		// increment fish frame (swish tail slowly)
 		Node->FrameCounter++;
