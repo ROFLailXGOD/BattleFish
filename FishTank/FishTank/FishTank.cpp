@@ -170,6 +170,16 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		switch (wParam)
 		{
+		case 49:
+			if (i1Pressed)
+			{
+				--i1Pressed;
+			}
+			else
+			{
+				++i1Pressed;
+			}
+			break;
 		case VK_ESCAPE:
 		case VK_F12:
 			DestroyWindow(hWnd);
