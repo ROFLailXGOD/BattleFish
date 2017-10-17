@@ -92,6 +92,10 @@ static FISH fish[6] =
 
 static char *ImageBuf;
 static short *HungerBarBuf;
+static short *TextBuffer;
+static short *HungerBar = (short *)malloc(fg_imagesiz(100, 10));
+static short *Text = (short *)malloc(fg_imagesiz(1280, 64));
+static int i1Pressed = 0; //Fix this fucking thing pls
 
 static int Counter = 0;
 static int BubbleFrame = 0;
