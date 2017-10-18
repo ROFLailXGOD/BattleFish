@@ -91,7 +91,6 @@ static FISH fish[6] =
 	} };
 
 static char *ImageBuf;
-static short *HungerBarBuf;
 
 static int Counter = 0;
 static int BubbleFrame = 0;
