@@ -9,6 +9,7 @@ public:
 	void init(int,int);
 	~LIST();
 	void AnimateFish(int,int);
+	void FeedFish();
 private:
 	void GetFish(int);
 	//int Counter = 0;

@@ -5,10 +5,14 @@
 #include "frame.h"
 //#include"defines.h"
 
+short *HMBuffer; // HM = HelpMenu
+short *HM; // HM = HelpMenu
+
 void LIST::init(int hBackground, int hWork){
 	register int i;
 	FISHLIST *Node;
 	int nNodes;
+
 	for (i = 0; i < 6; i++)
 		GetFish(i);
 	head = (FISHLIST *)NULL;
@@ -17,6 +21,13 @@ void LIST::init(int hBackground, int hWork){
 	// choose a random number of fish
 	srand(fg_getclock());
 	nNodes = IRAND(6, 12);
+
+	// HM init
+	HMBuffer = (short *)malloc(fg_imagesiz(1280, 64));
+	HM = (short *)malloc(fg_imagesiz(1280, 64)); // HM = HelpMenu
+	fg_showpcx("Images/Text.pcx", 0);
+	fg_move(0, 63);
+	fg_getdcb(HMBuffer, 1280, 64);
 
 	// build a linked list
 	for (i = 0; i < nNodes; i++)
@@ -74,6 +85,16 @@ LIST::~LIST(){
 	}
 }
 
+void LIST::FeedFish()
+{
+	FISHLIST *Node;
+	for (Node = head; Node != (FISHLIST *)NULL; Node = Node->Next)
+		if (fish[Node->FishNum].MaxHunger - Node->CurHunger > 99)
+			Node->CurHunger += 100;
+		else
+		{} // YOU KILLED HIM!
+}
+
 void LIST::GetFish(int FishNum){
 	register int i;
 
@@ -103,6 +124,11 @@ void LIST::AnimateFish(int hBackground, int hWork)
 	register int i;
 	int nRows, y;
 	int r, g, b;
+
+	extern int i2Pressed;
+	extern int i3Pressed;
+	extern int i4Pressed;
+	extern int i9Pressed;
 
 	short Bubble[14 * 14];
 	static char BubbleMask[14 * 14] = {
@@ -155,6 +181,12 @@ void LIST::AnimateFish(int hBackground, int hWork)
 		}
 		fg_clipdcb(Bubble, 14, nRows);
 	}
+
+	// display help menu (move it somewhere from there)
+	fg_cutdcb(HMBuffer, HM, 0, 32 * (i2Pressed || i3Pressed), 1280, 1280 * i9Pressed, 32);
+	fg_move(0, 710);
+	fg_clipdcb(HM, 1280 * i9Pressed, 32);
+
 
 	// display all the fish in the linked list
 	for (Node = head; Node != (FISHLIST *)NULL; Node = Node->Next)
@@ -212,9 +244,9 @@ void LIST::AnimateFish(int hBackground, int hWork)
 		// add hungerbar above every fish and animate it
 		if (Node->CurHunger > 0)
 		{
-			fg_cutdcb(Node->HungerBar[0], Node->HungerBar[1], 100, 0, 0, 100 * Node->CurHunger / fish[Node->FishNum].MaxHunger, 10);
+			fg_cutdcb(Node->HungerBar[0], Node->HungerBar[1], 100, 0, 0, 100 * i4Pressed * Node->CurHunger / fish[Node->FishNum].MaxHunger, 10);
 			fg_move(Node->x + fish[Node->FishNum].FishWidth[0] / 2 - 50, Node->y - fish[Node->FishNum].FishHeight[0] - 10);
-			fg_clipdcb(Node->HungerBar[1], 100 * Node->CurHunger / fish[Node->FishNum].MaxHunger, 10);
+			fg_clipdcb(Node->HungerBar[1], 100 * i4Pressed * Node->CurHunger / fish[Node->FishNum].MaxHunger, 10);
 			--(Node->CurHunger);
 		}
 		else
