@@ -20,6 +20,12 @@
 int hBackground; // background virtual buffer
 int hWork;       // workspace virtual buffer
 
+int i2Pressed; //Add Fish
+int i3Pressed; //Remove Fish
+int i4Pressed = 1; //Show/Hide Health Bar
+int i8Pressed = 1; //Mute/Unmute
+int i9Pressed = 1; //Show/Hide HM
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	PSTR szCmdParam, int iCmdShow)
 {
@@ -170,15 +176,82 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		switch (wParam)
 		{
-		case 49:
-			if (i1Pressed)
+		case 48: // 0
+			i2Pressed = 0;
+			i3Pressed = 0;
+			break;
+		case 49: // 1
+			if (i2Pressed)
+			{} // Add Blue Damsel
+			else if (i3Pressed)
+				{} // Remove Blue Damsel
+			else
+				mainlist.FeedFish();
+			break;
+		case 50: // 2
+			if (i2Pressed)
+			{} // Add Blue Tang
+			else if (i3Pressed)
+			{} // Remove Blue Tang
+			else
+				++i2Pressed;
+			break;
+		case 51: // 3
+			if (i2Pressed)
+			{} // Add Butterfly
+			else if (i3Pressed)
+			{} // Remove Butterfly
+			else
+				++i3Pressed;
+			break;
+		case 52: // 4
+			if (i2Pressed)
+			{} // Add Gudgeon
+			else if (i3Pressed)
+			{} // Remove Gudgeon
+			else
+				if (i4Pressed)
+					--i4Pressed;
+				else
+					++i4Pressed;
+			break;
+		case 53: // 5
+			if (i2Pressed)
+			{} // Add Killifish
+			else if (i3Pressed)
+			{} // Remove Killifish
+			break;
+		case 54: // 6
+			if (i2Pressed)
 			{
-				--i1Pressed;
+			} // Add Sea Horse
+			else if (i3Pressed)
+			{
+			} // Remove Sea Horse
+			break;
+		case 56: // 8
+			if (i8Pressed)
+			{
+				PlaySound(NULL, NULL, NULL);
+				--i8Pressed;
 			}
 			else
 			{
-				++i1Pressed;
+				PlaySound("Sounds/BackGroundMusic.wav", NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
+				++i8Pressed;
 			}
+			break;
+		case 57: // 9
+			if (i9Pressed)
+				--i9Pressed;
+			else
+				++i9Pressed;
+			break;
+		case VK_F5: 
+			// Quick Save
+			break;
+		case VK_F9:
+			//Quick Load
 			break;
 		case VK_ESCAPE:
 		case VK_F12:

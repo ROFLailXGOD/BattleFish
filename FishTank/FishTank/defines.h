@@ -37,7 +37,7 @@ static FISH fish[6] =
 		0,0,0,0,
 		0,0,0,0,
 		NULL,NULL,NULL,NULL,
-		10000
+		11000
 	},{
 		"Images/BlueTang.pcx", RIGHT, 4, 4,
 		492,635,200,275,
@@ -47,7 +47,7 @@ static FISH fish[6] =
 		0,0,0,0,
 		0,0,0,0,
 		NULL,NULL,NULL,NULL,
-		10000
+		12500
 	},{
 		"Images/Butterfly.pcx", RIGHT, 4, 4,
 		244,397,191,286,
@@ -57,7 +57,7 @@ static FISH fish[6] =
 		0,0,0,0,
 		0,0,0,0,
 		NULL,NULL,NULL,NULL,
-		1000
+		12000
 	},{
 		"Images/Gudgeon.pcx", RIGHT, 4, 4,
 		23,203,198,280,
@@ -77,7 +77,7 @@ static FISH fish[6] =
 		0,0,0,0,
 		0,0,0,0,
 		NULL,NULL,NULL,NULL,
-		10000
+		9000
 	},{
 		"Images/SeaHorse.pcx", LEFT, 3, 4,
 		388,435,205,293,
@@ -87,15 +87,10 @@ static FISH fish[6] =
 		0,0,0,0,
 		0,0,0,0,
 		NULL,NULL,NULL,NULL,
-		20000
+		7000
 	} };
 
 static char *ImageBuf;
-static short *HungerBarBuf;
-static short *TextBuffer;
-static short *HungerBar = (short *)malloc(fg_imagesiz(100, 10));
-static short *Text = (short *)malloc(fg_imagesiz(1280, 64));
-static int i1Pressed = 0; //Fix this fucking thing pls
 
 static int Counter = 0;
 static int BubbleFrame = 0;

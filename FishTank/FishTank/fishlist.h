@@ -17,4 +17,5 @@ public:
 	int FishDir;
 	int FrameCounter;
 	int CurHunger;
+	short *HungerBar[2];
 };
