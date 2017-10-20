@@ -179,6 +179,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		case 48: // 0
 			i2Pressed = 0;
 			i3Pressed = 0;
+			break;
 		case 49: // 1
 			if (i2Pressed)
 			{} // Add Blue Damsel
@@ -216,9 +217,17 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		case 53: // 5
 			if (i2Pressed)
-			{} // Add Sea Horse
+			{} // Add Killifish
 			else if (i3Pressed)
-			{} // Remove Sea Horse
+			{} // Remove Killifish
+			break;
+		case 54: // 6
+			if (i2Pressed)
+			{
+			} // Add Sea Horse
+			else if (i3Pressed)
+			{
+			} // Remove Sea Horse
 			break;
 		case 56: // 8
 			if (i8Pressed)

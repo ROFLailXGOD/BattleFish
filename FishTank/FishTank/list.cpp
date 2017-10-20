@@ -12,6 +12,7 @@ void LIST::init(int hBackground, int hWork){
 	register int i;
 	FISHLIST *Node;
 	int nNodes;
+	int Hunger;
 
 	for (i = 0; i < 6; i++)
 		GetFish(i);
@@ -55,7 +56,8 @@ void LIST::init(int hBackground, int hWork){
 		Node->FrameCounter = IRAND(0, 2);
 		Node->HungerBar[0] = (short *)malloc(fg_imagesiz(100, 10));
 		Node->HungerBar[1] = (short *)malloc(fg_imagesiz(100, 10));
-		Node->CurHunger = fish[Node->FishNum].MaxHunger;
+		Hunger = 0.75 * fish[Node->FishNum].MaxHunger;
+		Node->CurHunger = IRAND(Hunger, fish[Node->FishNum].MaxHunger);
 		if (head == (FISHLIST *)NULL)
 		{
 			head = Node;
@@ -89,8 +91,8 @@ void LIST::FeedFish()
 {
 	FISHLIST *Node;
 	for (Node = head; Node != (FISHLIST *)NULL; Node = Node->Next)
-		if (fish[Node->FishNum].MaxHunger - Node->CurHunger > 99)
-			Node->CurHunger += 100;
+		if (fish[Node->FishNum].MaxHunger - Node->CurHunger > 999)
+			Node->CurHunger += 1000;
 		else
 		{} // YOU KILLED HIM!
 }
