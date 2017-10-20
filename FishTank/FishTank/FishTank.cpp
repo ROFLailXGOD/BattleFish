@@ -19,6 +19,77 @@
 
 int hBackground; // background virtual buffer
 int hWork;       // workspace virtual buffer
+HDC      hDC;
+HPALETTE hPal;
+LRESULT CALLBACK WindowProc(HWND, UINT, WPARAM, LPARAM);
+
+FISH fish[6] =
+{ {
+		"Images/BlueDamsel.pcx", LEFT, 4, 4,
+		79,232,218,281,
+		270,423,219,281,
+		457,610,219,281,
+		73,226,334,396,
+		0,0,0,0,
+		0,0,0,0,
+		NULL,NULL,NULL,NULL,
+		11000
+	},{
+		"Images/BlueTang.pcx", RIGHT, 4, 4,
+		492,635,200,275,
+		325,468,200,275,
+		165,308,200,275,
+		1,144,199,274,
+		0,0,0,0,
+		0,0,0,0,
+		NULL,NULL,NULL,NULL,
+		12500
+	},{
+		"Images/Butterfly.pcx", RIGHT, 4, 4,
+		244,397,191,286,
+		41,194,191,286,
+		41,194,337,433,
+		244,397,338,433,
+		0,0,0,0,
+		0,0,0,0,
+		NULL,NULL,NULL,NULL,
+		12000
+	},{
+		"Images/Gudgeon.pcx", RIGHT, 4, 4,
+		23,203,198,280,
+		231,411,195,280,
+		438,618,195,280,
+		23,203,340,425,
+		0,0,0,0,
+		0,0,0,0,
+		NULL,NULL,NULL,NULL,
+		10000
+	},{
+		"Images/Killifish.pcx", RIGHT, 4,  4,
+		133,285,153,205,
+		350,502,153,205,
+		136,288,273,324,
+		350,502,272,324,
+		0,0,0,0,
+		0,0,0,0,
+		NULL,NULL,NULL,NULL,
+		9000
+	},{
+		"Images/SeaHorse.pcx", LEFT, 3, 4,
+		388,435,205,293,
+		295,342,205,293,
+		199,246,205,293,
+		0,0,0,0,
+		0,0,0,0,
+		0,0,0,0,
+		NULL,NULL,NULL,NULL,
+		7000
+	} };
+
+int Counter = 0;
+int KillCount = 0;
+int BubbleFrame = 0;
+LIST mainlist;
 
 int i2Pressed; //Add Fish
 int i3Pressed; //Remove Fish
@@ -182,33 +253,49 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		case 49: // 1
 			if (i2Pressed)
-			{} // Add Blue Damsel
+			{
+				mainlist.addFish(0);
+			} // Add Blue Damsel
 			else if (i3Pressed)
-				{} // Remove Blue Damsel
+			{
+				mainlist.killFish(0);
+			} // Remove Blue Damsel
 			else
 				mainlist.FeedFish();
 			break;
 		case 50: // 2
 			if (i2Pressed)
-			{} // Add Blue Tang
+			{
+				mainlist.addFish(1);
+			} // Add Blue Tang
 			else if (i3Pressed)
-			{} // Remove Blue Tang
+			{
+				mainlist.killFish(1);
+			} // Remove Blue Tang
 			else
 				++i2Pressed;
 			break;
 		case 51: // 3
 			if (i2Pressed)
-			{} // Add Butterfly
+			{
+				mainlist.addFish(2);
+			} // Add Butterfly
 			else if (i3Pressed)
-			{} // Remove Butterfly
+			{
+				mainlist.killFish(2);
+			} // Remove Butterfly
 			else
 				++i3Pressed;
 			break;
 		case 52: // 4
 			if (i2Pressed)
-			{} // Add Gudgeon
+			{
+				mainlist.addFish(3);
+			} // Add Gudgeon
 			else if (i3Pressed)
-			{} // Remove Gudgeon
+			{
+				mainlist.killFish(3);
+			} // Remove Gudgeon
 			else
 				if (i4Pressed)
 					--i4Pressed;
@@ -217,16 +304,22 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		case 53: // 5
 			if (i2Pressed)
-			{} // Add Killifish
+			{
+				mainlist.addFish(4);
+			} // Add Killifish
 			else if (i3Pressed)
-			{} // Remove Killifish
+			{
+				mainlist.killFish(4);
+			} // Remove Killifish
 			break;
 		case 54: // 6
 			if (i2Pressed)
 			{
+				mainlist.addFish(5);
 			} // Add Sea Horse
 			else if (i3Pressed)
 			{
+				mainlist.killFish(5);
 			} // Remove Sea Horse
 			break;
 		case 56: // 8
