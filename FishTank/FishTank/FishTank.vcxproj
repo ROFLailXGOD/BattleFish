@@ -118,6 +118,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="fishlist.cpp" />
     <ClCompile Include="FishTank.cpp" />
     <ClCompile Include="list.cpp" />
   </ItemGroup>

@@ -7,6 +7,52 @@
 
 short *HMBuffer; // HM = HelpMenu
 short *HM; // HM = HelpMenu
+extern int Counter;
+extern int BubbleFrame;
+extern FISH fish[6];
+extern int KillCount;
+
+FISHLIST* LIST::createFish(int numberFish)
+{
+	FISHLIST* Node;
+	Node = (FISHLIST *)malloc(sizeof(FISHLIST));
+	Node->xDir = IRAND(RIGHT, LEFT);
+	Node->yDir = IRAND(UP, DOWN);
+	Node->FishDir = IRAND(0, 1);
+	if (numberFish == 6)
+	{
+		Node->FishNum = IRAND(0, 5);
+	}
+	else if ((numberFish >= 0) && (numberFish < 6))
+	{
+		Node->FishNum = numberFish;
+	}
+
+	Node->Next = (FISHLIST *)NULL;
+	Node->xMin = IRAND(-300, -100);
+	// EDITED by ROFLail_X_GOD
+	Node->xMax = IRAND(1380, 1580);
+	// EDITED by ROFLail_X_GOD
+	if (Node->xDir == RIGHT)
+		Node->x = Node->xMin;
+	else
+		Node->x = Node->xMax;
+	Node->xInc = IRAND(1, 4);
+	Node->yMin = IRAND(60, 400);
+	Node->yMax = IRAND(Node->yMin, 479);
+	Node->y = IRAND(Node->yMin, Node->yMax);
+	Node->yInc = IRAND(1, 4);
+	Node->Frame = IRAND(1, 2);
+	Node->FrameCounter = IRAND(0, 2);
+	Node->HungerBar[0] = (short *)malloc(fg_imagesiz(100, 10));
+	Node->HungerBar[1] = (short *)malloc(fg_imagesiz(100, 10));
+	Node->CurHunger = fish[Node->FishNum].MaxHunger;
+	// copy hungerbar image to buffer
+	fg_showpcx("Images/HungerBar.pcx", 0);
+	fg_move(0, 9);
+	fg_getdcb(Node->HungerBar[0], 100, 10);
+	return Node;
+}
 
 void LIST::init(int hBackground, int hWork){
 	register int i;
@@ -33,7 +79,7 @@ void LIST::init(int hBackground, int hWork){
 	// build a linked list
 	for (i = 0; i < nNodes; i++)
 	{
-		Node = (FISHLIST *)malloc(sizeof(FISHLIST));
+		/*Node = (FISHLIST *)malloc(sizeof(FISHLIST));
 		Node->xDir = IRAND(RIGHT, LEFT);
 		Node->yDir = IRAND(UP, DOWN);
 		Node->FishDir = IRAND(0, 1);
@@ -57,7 +103,8 @@ void LIST::init(int hBackground, int hWork){
 		Node->HungerBar[0] = (short *)malloc(fg_imagesiz(100, 10));
 		Node->HungerBar[1] = (short *)malloc(fg_imagesiz(100, 10));
 		Hunger = 0.75 * fish[Node->FishNum].MaxHunger;
-		Node->CurHunger = IRAND(Hunger, fish[Node->FishNum].MaxHunger);
+		Node->CurHunger = IRAND(Hunger, fish[Node->FishNum].MaxHunger);*/
+		Node = createFish(6);
 		if (head == (FISHLIST *)NULL)
 		{
 			head = Node;
@@ -70,9 +117,9 @@ void LIST::init(int hBackground, int hWork){
 		}
 
 		// copy hungerbar image to buffer
-		fg_showpcx("Images/HungerBar.pcx", 0);
+		/*fg_showpcx("Images/HungerBar.pcx", 0);
 		fg_move(0, 9);
-		fg_getdcb(Node->HungerBar[0], 100, 10);
+		fg_getdcb(Node->HungerBar[0], 100, 10);*/
 
 	}
 }
@@ -94,7 +141,9 @@ void LIST::FeedFish()
 		if (fish[Node->FishNum].MaxHunger - Node->CurHunger > 999)
 			Node->CurHunger += 1000;
 		else
-		{} // YOU KILLED HIM!
+		{
+			this->killFish(Node);
+		} // YOU KILLED HIM!
 }
 
 void LIST::GetFish(int FishNum){
@@ -252,7 +301,17 @@ void LIST::AnimateFish(int hBackground, int hWork)
 			--(Node->CurHunger);
 		}
 		else
-		{}; //if(Node->CurHunger <= 0){метод для удаления рыбы}
+		{
+			this->killFish(Node);
+		}; //if(Node->CurHunger <= 0){метод для удаления рыбы}
+
+		++KillCount;
+		KillCount %= 1;
+		if (KillCount == 0) {
+			if ((Node->FishNum == 5) && (Node->CurHunger < fish[Node->FishNum].MaxHunger / 2)) {
+				iWannaKillSmbd(Node);
+			}
+		}
 
 		// increment fish frame (swish tail slowly)
 		Node->FrameCounter++;
@@ -277,3 +336,90 @@ void LIST::AnimateFish(int hBackground, int hWork)
 	// display the frame we just constructed
 	fg_vbpaste(0, vbWidth - 1, 0, vbHeight - 1, 0, vbHeight - 1);
 }
+
+void LIST::killFish(int numberFish)
+{
+	numberFish--;
+	FISHLIST* Test1, *Test2;
+	Test1 = head;
+	Test2 = (FISHLIST *)NULL;
+	while (Test1 != (FISHLIST *)NULL)
+	{
+		if (Test1->FishNum == numberFish)
+		{
+			if (Test2 == (FISHLIST *)NULL)
+			{
+				head = head->Next;
+				break;
+			}
+			else
+			{
+				Test2->Next = Test1->Next;
+				break;
+			}
+		}
+		Test2 = Test1;
+		Test1 = Test1->Next;
+	}
+}
+
+void LIST::killFish(FISHLIST* Test)
+{
+	if (Test == head)
+	{
+		head = head->Next;
+	}
+	else
+	{
+		FISHLIST* Test1 = head;
+		while (Test1 != (FISHLIST *)NULL)
+		{
+			if (Test1->Next == Test)
+			{
+				Test1->Next = Test->Next;
+				break;
+			}
+			Test1 = Test1->Next;
+		}
+	}
+}
+
+void LIST::addFish(int numberFish)
+{
+	FISHLIST* newFish = createFish(numberFish);
+	if (head == (FISHLIST *)NULL)
+	{
+		head = newFish;;
+		tail = head;
+	}
+	else
+	{
+		tail->Next = newFish;
+		tail = newFish;
+	}
+}
+
+void LIST::iWannaKillSmbd(FISHLIST* killer)
+{
+	FISHLIST* it = head;
+	while (it != (FISHLIST*)NULL)
+	{
+		if ((killer != it) && (killer->Distance(it)))
+		{
+			if ((it->FishNum == 5) && (it->CurHunger < killer->CurHunger))
+			{
+				this->killFish(killer);
+				it->CurHunger += 2000;
+				break;
+			}
+			else
+			{
+				this->killFish(it);
+				killer->CurHunger += 2000;
+				break;
+			}
+		}
+		it = it->Next;
+	}
+}
+
