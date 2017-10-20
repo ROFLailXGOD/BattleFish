@@ -1,2 +1,4 @@
-﻿  FishTank.vcxproj -> C:\Users\Антон\Documents\GitHub\BattleFish\FishTank\Debug\FishTank.exe
+﻿  list.cpp
+c:\users\антон\documents\github\battlefish\fishtank\fishtank\list.cpp(61): warning C4101: Hunger: неиспользованная локальная переменная
+  FishTank.vcxproj -> C:\Users\Антон\Documents\GitHub\BattleFish\FishTank\Debug\FishTank.exe
   FishTank.vcxproj -> C:\Users\Антон\Documents\GitHub\BattleFish\FishTank\Debug\FishTank.pdb (Partial PDB)

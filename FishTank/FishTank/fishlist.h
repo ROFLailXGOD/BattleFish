@@ -16,5 +16,7 @@ public:
 	int yDir;
 	int FishDir;
 	int FrameCounter;
-	int hunger;
+	int CurHunger;
+	short *HungerBar[2];
+	bool Distance(FISHLIST *);
 };
