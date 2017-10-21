@@ -15,6 +15,7 @@ extern int KillCount;
 FISHLIST* LIST::createFish(int numberFish)
 {
 	FISHLIST* Node;
+	int Hunger;
 	Node = (FISHLIST *)malloc(sizeof(FISHLIST));
 	Node->xDir = IRAND(RIGHT, LEFT);
 	Node->yDir = IRAND(UP, DOWN);
@@ -46,7 +47,8 @@ FISHLIST* LIST::createFish(int numberFish)
 	Node->FrameCounter = IRAND(0, 2);
 	Node->HungerBar[0] = (short *)malloc(fg_imagesiz(100, 10));
 	Node->HungerBar[1] = (short *)malloc(fg_imagesiz(100, 10));
-	Node->CurHunger = fish[Node->FishNum].MaxHunger;
+	Hunger = 0.75 * fish[Node->FishNum].MaxHunger;
+	Node->CurHunger = IRAND(Hunger, fish[Node->FishNum].MaxHunger);
 	// copy hungerbar image to buffer
 	fg_showpcx("Images/HungerBar.pcx", 0);
 	fg_move(0, 9);
@@ -58,7 +60,6 @@ void LIST::init(int hBackground, int hWork){
 	register int i;
 	FISHLIST *Node;
 	int nNodes;
-	int Hunger;
 
 	for (i = 0; i < 6; i++)
 		GetFish(i);
