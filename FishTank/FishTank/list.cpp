@@ -340,7 +340,6 @@ void LIST::AnimateFish(int hBackground, int hWork)
 
 void LIST::killFish(int numberFish)
 {
-	numberFish--;
 	FISHLIST* Test1, *Test2;
 	Test1 = head;
 	Test2 = (FISHLIST *)NULL;
@@ -355,6 +354,10 @@ void LIST::killFish(int numberFish)
 			}
 			else
 			{
+				if (Test1 == tail)
+				{
+					tail = Test2;
+				}
 				Test2->Next = Test1->Next;
 				break;
 			}
