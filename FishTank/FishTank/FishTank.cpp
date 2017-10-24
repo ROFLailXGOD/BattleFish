@@ -8,14 +8,6 @@
 #include "fish.h"
 #include "fishlist.h"
 #include "list.h"
-//#include"defines.h"
-
-//int hWheel;      // water wheel virtual buffer
-//EDITED by HellWiz
-
-// buffers required for water wheel flic file
-//char WheelContext[20];
-//EDITED by HellWiz
 
 int hBackground; // background virtual buffer
 int hWork;       // workspace virtual buffer
@@ -130,44 +122,34 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		NULL,                    // window menu handle
 		hInstance,               // program instance handle
 		NULL);                   // creation parameters
-	// EDITED by ROFLail_X_GOD
 
 	ShowWindow(hWnd, iCmdShow);
 	UpdateWindow(hWnd);
 
 	PlaySound("Sounds/BackGroundMusic.wav", NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
-	//ADDED by ROFLail_X_GOD
 
-	while (TRUE)
-	{
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-		{
+	while (TRUE){
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)){
 			if (msg.message == WM_QUIT)
 				break;
-			else
-			{
+			else{
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
 		}
-		/*else
-		AnimateFish();*/
-		//EDITED by HellWiz
 	}
 
 	return msg.wParam;
 }
 
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
-{
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam){
 	PAINTSTRUCT ps;
 	int  BuffSize;
 	int  Button;
 	FILE *Stream;
 	register int i;
 
-	switch (iMsg)
-	{
+	switch (iMsg){
 	case WM_CREATE:
 		hDC = GetDC(hWnd);
 		fg_setdc(hDC);
@@ -177,8 +159,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		ShowWindow(hWnd, SW_SHOWNORMAL);
 
 		// set display resolution
-		if (fg_modetest(vbWidth, vbHeight, fg_colors()) != 0)
-		{
+		if (fg_modetest(vbWidth, vbHeight, fg_colors()) != 0){
 			MessageBox(hWnd, "Cannot set desktop resolution.", "Error", MB_OK | MB_ICONSTOP);
 			DestroyWindow(hWnd);
 			return 0;
@@ -188,8 +169,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		// initialize virtual buffers
 		fg_vbinit();
 		fg_vbdepth(vbDepth);
-		//hWheel = fg_vballoc(186,153);
-		//EDITED by HellWiz
 		hWork = fg_vballoc(vbWidth, vbHeight);
 		hBackground = fg_vballoc(vbWidth, vbHeight);
 
@@ -200,38 +179,14 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		// get all the fish and put them into a linked list
 		fg_vbopen(hWork);
 		mainlist.init(hBackground, hWork);
-		/*
-		fg_vbopen(hWork);
-		for (i = 0; i < 6; i++)
-			GetFish(i);
-		InitFish();
-		*/
-		// load the water wheel flic file into the fg_imagebuf() buffer
-		/*fg_flicopen("Wheel.flc",WheelContext);
-		fg_flicdone(WheelContext);
-		Stream = fopen("Wheel.flc","rb");
-		BuffSize = filelength(fileno(Stream));
-		ImageBuf = (char *)malloc(BuffSize);
-		fread(ImageBuf,sizeof(char),BuffSize,Stream);
-		fclose(Stream);
-		fg_imagebuf(ImageBuf,BuffSize);*/
-		//EDITED by HellWiz
-
-		// load virtual palette with the water wheel flic file palette
-		/*fg_vbopen(hWheel);
-		fg_flicplay(WheelContext,1,5);
-		fg_vbclose();*/
-		//EDITED by HellWiz
 
 		// things won't look too good with a 256-color display driver
-		if (fg_colors() <= 8)
-		{
+		if (fg_colors() <= 8){
 			MessageBeep(0);
 			Button = MessageBox(hWnd,
 				"A high color or true color display is recommended. Continue?",
 				"FishHC", MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2);
-			if (Button == IDNO)
-			{
+			if (Button == IDNO){
 				DestroyWindow(hWnd);
 				return 0;
 			}
@@ -245,55 +200,46 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		return 0;
 
 	case WM_KEYDOWN:
-		switch (wParam)
-		{
+		switch (wParam){
 		case 48: // 0
 			i2Pressed = 0;
 			i3Pressed = 0;
 			break;
 		case 49: // 1
-			if (i2Pressed)
-			{
+			if (i2Pressed){
 				mainlist.addFish(0);
 			} // Add Blue Damsel
-			else if (i3Pressed)
-			{
+			else if (i3Pressed){
 				mainlist.killFish(0);
 			} // Remove Blue Damsel
 			else
 				mainlist.FeedFish();
 			break;
 		case 50: // 2
-			if (i2Pressed)
-			{
+			if (i2Pressed){
 				mainlist.addFish(1);
 			} // Add Blue Tang
-			else if (i3Pressed)
-			{
+			else if (i3Pressed){
 				mainlist.killFish(1);
 			} // Remove Blue Tang
 			else
 				++i2Pressed;
 			break;
 		case 51: // 3
-			if (i2Pressed)
-			{
+			if (i2Pressed){
 				mainlist.addFish(2);
 			} // Add Butterfly
-			else if (i3Pressed)
-			{
+			else if (i3Pressed){
 				mainlist.killFish(2);
 			} // Remove Butterfly
 			else
 				++i3Pressed;
 			break;
 		case 52: // 4
-			if (i2Pressed)
-			{
+			if (i2Pressed){
 				mainlist.addFish(3);
 			} // Add Gudgeon
-			else if (i3Pressed)
-			{
+			else if (i3Pressed){
 				mainlist.killFish(3);
 			} // Remove Gudgeon
 			else
@@ -303,33 +249,27 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					++i4Pressed;
 			break;
 		case 53: // 5
-			if (i2Pressed)
-			{
+			if (i2Pressed){
 				mainlist.addFish(4);
 			} // Add Killifish
-			else if (i3Pressed)
-			{
+			else if (i3Pressed){
 				mainlist.killFish(4);
 			} // Remove Killifish
 			break;
 		case 54: // 6
-			if (i2Pressed)
-			{
+			if (i2Pressed){
 				mainlist.addFish(5);
 			} // Add Sea Horse
-			else if (i3Pressed)
-			{
+			else if (i3Pressed){
 				mainlist.killFish(5);
 			} // Remove Sea Horse
 			break;
 		case 56: // 8
-			if (i8Pressed)
-			{
+			if (i8Pressed){
 				PlaySound(NULL, NULL, NULL);
 				--i8Pressed;
 			}
-			else
-			{
+			else{
 				PlaySound("Sounds/BackGroundMusic.wav", NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
 				++i8Pressed;
 			}
@@ -379,211 +319,3 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	}
 	return DefWindowProc(hWnd, iMsg, wParam, lParam);
 }
-
-/*void AnimateFish(void)
-{
-	FISHLIST *Node;
-	register int i;
-	int nRows, y;
-	int r, g, b;
-
-	short Bubble[14 * 14];
-	static char BubbleMask[14 * 14] = {
-		0,0,0,0,0,1,1,1,1,0,0,0,0,0,
-		0,0,0,1,1,1,1,1,1,1,1,0,0,0,
-		0,0,1,1,1,1,1,1,1,1,1,1,0,0,
-		0,0,1,1,1,1,1,1,1,1,1,1,0,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,0,1,1,1,1,1,1,1,1,1,1,0,0,
-		0,0,1,1,1,1,1,1,1,1,1,1,0,0,
-		0,0,0,1,1,1,1,1,1,1,1,0,0,0,
-		0,0,0,0,0,1,1,1,1,0,0,0,0,0 };
-
-	// copy background to workspace
-	fg_vbcopy(0, vbWidth - 1, 0, vbHeight - 1, 0, vbHeight - 1, hBackground, hWork);
-
-	// display next frame of water wheel flic file
-	/*fg_vbopen(hWheel);
-	if (fg_flicplay(WheelContext,1,5) == 0)
-	{
-	fg_flicskip(WheelContext,-1);
-	fg_flicskip(WheelContext,1);
-	fg_flicplay(WheelContext,1,5);
-	BubbleFrame = 0;
-	}
-	fg_vbcopy(0,185,0,152,vbWidth-186,vbHeight-1,hWheel,hWork);//
-	//EDITED by HellWiz
-
-	// create and display a translucent bubble moving up
-	fg_vbopen(hWork);
-	BubbleFrame++;
-	y = (33 - BubbleFrame) * 11;
-	fg_move(IRAND(457, 459), y);
-	nRows = min(y, 14);
-	if (nRows > 0)
-	{
-		fg_getdcb(Bubble, 14, nRows);
-		for (i = 0; i < 14 * 14; i++)
-		{
-			if (BubbleMask[i])
-			{
-				fg_unmaprgb(Bubble[i], &r, &g, &b);
-				Bubble[i] = fg_maprgb(r + 30, g + 30, b + 30);
-			}
-		}
-		fg_clipdcb(Bubble, 14, nRows);
-	}
-
-	// display all the fish in the linked list
-	for (Node = Head; Node != (FISHLIST *)NULL; Node = Node->Next)
-	{
-		// blit the fish, may reverse while blitting
-		fg_move(Node->x, Node->y);
-		if (Node->xDir == fish[Node->FishNum].Direction)
-		{
-			fg_clipdcb(fish[Node->FishNum].Bitmap[Node->Frame],
-				fish[Node->FishNum].FishWidth[Node->Frame],
-				fish[Node->FishNum].FishHeight[Node->Frame]);
-		}
-		else
-		{
-			fg_flipdcb(fish[Node->FishNum].Bitmap[Node->Frame],
-				fish[Node->FishNum].FishWidth[Node->Frame],
-				fish[Node->FishNum].FishHeight[Node->Frame]);
-		}
-
-		// increment the horizontal position
-		if (Node->xDir == RIGHT)
-		{
-			Node->x += Node->xInc;
-			if (Node->x > Node->xMax)
-				Node->xDir = LEFT;
-		}
-		else
-		{
-			Node->x -= Node->xInc;
-			if (Node->x < Node->xMin)
-				Node->xDir = RIGHT;
-		}
-
-		// adjust vertical position
-		Node->y += Node->yDir;
-
-		// keep vertical motion within tolerance area
-		if (Node->y >= Node->yMax)
-			Node->yDir = UP;
-		else if (Node->y <= Node->yMin)
-			Node->yDir = DOWN;
-
-		// add a random element to speed and vertical motion
-		Counter++;
-		if (Counter % Node->y == 0)
-		{
-			Node->yDir = IRAND(-1, 5);
-			if (Node->yDir > 1)
-				Node->yDir = 0;
-			Node->xInc = IRAND(1, 4);
-			Node->yMin = IRAND(60, 400);
-			Node->yMax = IRAND(Node->yMin, vbHeight - 1);
-		}
-
-		// increment fish frame (swish tail slowly)
-		Node->FrameCounter++;
-		if (Node->FrameCounter >= fish[Node->FishNum].FrameDelay)
-		{
-			if (Node->FishDir == RIGHT)
-			{
-				Node->Frame++;
-				if (Node->Frame >= fish[Node->FishNum].nFrames - 1)
-					Node->FishDir = LEFT;
-			}
-			else
-			{
-				Node->Frame--;
-				if (Node->Frame <= 1)
-					Node->FishDir = RIGHT;
-			}
-			Node->FrameCounter = 0;
-		}
-	}
-
-	// display the frame we just constructed
-	fg_vbpaste(0, vbWidth - 1, 0, vbHeight - 1, 0, vbHeight - 1);
-}*/
-
-/*void GetFish(int FishNum)
-{
-	register int i;
-
-	// display the fish PCX file the workspace virtual buffer
-	fg_showpcx(fish[FishNum].FileName, 0);
-
-	// grab the bitmaps for all the frames
-	for (i = 0; i < fish[FishNum].nFrames; i++)
-	{
-		fish[FishNum].FishWidth[i] =
-			fish[FishNum].Frame[i].x2 - fish[FishNum].Frame[i].x1 + 1;
-		fish[FishNum].FishHeight[i] =
-			fish[FishNum].Frame[i].y2 - fish[FishNum].Frame[i].y1 + 1;
-
-		fish[FishNum].Bitmap[i] =
-			(short *)malloc(fg_imagesiz(fish[FishNum].FishWidth[i], fish[FishNum].FishHeight[i]));
-
-		fg_move(fish[FishNum].Frame[i].x1, fish[FishNum].Frame[i].y2);
-		fg_getdcb(fish[FishNum].Bitmap[i],
-			fish[FishNum].FishWidth[i], fish[FishNum].FishHeight[i]);
-	}
-}*/
-/*
-void InitFish(void)
-{
-	FISHLIST *Node;
-	int nNodes;
-	register int i;
-
-	// choose a random number of fish
-	srand(fg_getclock());
-	nNodes = IRAND(6, 12);
-
-	// build a linked list
-	for (i = 0; i < nNodes; i++)
-	{
-		Node = (FISHLIST *)malloc(sizeof(FISHLIST));
-		Node->xDir = IRAND(RIGHT, LEFT);
-		Node->yDir = IRAND(UP, DOWN);
-		Node->FishDir = IRAND(0, 1);
-		Node->FishNum = IRAND(0, 5);
-		Node->Next = (FISHLIST *)NULL;
-		Node->xMin = IRAND(-300, -100);
-		// EDITED by ROFLail_X_GOD
-		Node->xMax = IRAND(1380, 1580);
-		// EDITED by ROFLail_X_GOD
-		if (Node->xDir == RIGHT)
-			Node->x = Node->xMin;
-		else
-			Node->x = Node->xMax;
-		Node->xInc = IRAND(1, 4);
-		Node->yMin = IRAND(60, 400);
-		Node->yMax = IRAND(Node->yMin, 479);
-		Node->y = IRAND(Node->yMin, Node->yMax);
-		Node->yInc = IRAND(1, 4);
-		Node->Frame = IRAND(1, 2);
-		Node->FrameCounter = IRAND(0, 2);
-		if (Head == (FISHLIST *)NULL)
-		{
-			Head = Node;
-			Tail = Head;
-		}
-		else
-		{
-			Tail->Next = Node;
-			Tail = Node;
-		}
-	}
-}
-*/

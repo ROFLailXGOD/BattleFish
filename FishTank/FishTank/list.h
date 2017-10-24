@@ -1,7 +1,6 @@
 #pragma once
 #include"fishlist.h"
 #include <fstream>
-//#include"defines.h"
 
 class LIST {
 public:
@@ -21,6 +20,4 @@ public:
 	void dereal();
 private:
 	void GetFish(int);
-	//int Counter = 0;
-	
 };

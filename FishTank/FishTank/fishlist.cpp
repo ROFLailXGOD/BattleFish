@@ -12,3 +12,8 @@ bool FISHLIST::Distance(FISHLIST* sacrifice)
 		((this->y + fish[5].FishHeight[0] / 2) - (sacrifice->y + fish[sacrifice->FishNum].FishHeight[0] / 2)));
 	return (dist <= std::min(fish[5].FishHeight[0],fish[sacrifice->FishNum].FishHeight[0]));
 }
+
+FISHLIST::~FISHLIST(){
+	free(HungerBar[1]);
+	free(HungerBar[0]);
+}
