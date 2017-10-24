@@ -342,9 +342,11 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		case VK_F5: 
 			// Quick Save
+			mainlist.sereal(mainlist.head);
 			break;
 		case VK_F9:
 			//Quick Load
+			mainlist.dereal();
 			break;
 		case VK_ESCAPE:
 		case VK_F12:
