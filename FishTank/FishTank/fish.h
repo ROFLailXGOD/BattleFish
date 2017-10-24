@@ -1,6 +1,5 @@
 #pragma once
 #include "frame.h"
-//#include"defines.h"
 // type FISH defines each species of fish
 class FISH {
 public:
