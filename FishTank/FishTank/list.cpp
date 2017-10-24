@@ -104,12 +104,15 @@ LIST::~LIST(){
 void LIST::FeedFish()
 {
 	FISHLIST *Node;
-	for (Node = head; Node != (FISHLIST *)NULL; Node = Node->Next)
-		if (fish[Node->FishNum].MaxHunger - Node->CurHunger > 999)
+	for (Node = head; Node != (FISHLIST *)NULL; )
+		if (fish[Node->FishNum].MaxHunger - Node->CurHunger > 999) {
 			Node->CurHunger += 1000;
-		else
-		{
-			this->killFish(Node);
+			Node = Node->Next;
+		}
+		else{
+			FISHLIST *tmp = Node;
+			Node = Node->Next;
+			this->killFish(tmp);
 		} // YOU KILLED HIM!
 }
 
