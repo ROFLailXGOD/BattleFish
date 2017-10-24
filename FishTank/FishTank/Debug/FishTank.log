@@ -1,4 +1,4 @@
 ﻿  list.cpp
-c:\users\антон\documents\github\battlefish\fishtank\fishtank\list.cpp(61): warning C4101: Hunger: неиспользованная локальная переменная
-  FishTank.vcxproj -> C:\Users\Антон\Documents\GitHub\BattleFish\FishTank\Debug\FishTank.exe
-  FishTank.vcxproj -> C:\Users\Антон\Documents\GitHub\BattleFish\FishTank\Debug\FishTank.pdb (Partial PDB)
+c:\users\home\desktop\battlefish-master\fishtank\fishtank\list.cpp(51): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+c:\users\home\desktop\battlefish-master\fishtank\fishtank\list.cpp(452): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+  FishTank.vcxproj -> C:\Users\home\Desktop\BattleFish-master\FishTank\Debug\FishTank.exe

@@ -3,6 +3,7 @@
 #include "FGWIN.H"
 #include "defines.h"
 #include "frame.h"
+#include <fstream>
 //#include"defines.h"
 
 short *HMBuffer; // HM = HelpMenu
@@ -15,6 +16,7 @@ extern int KillCount;
 FISHLIST* LIST::createFish(int numberFish)
 {
 	FISHLIST* Node;
+	int Hunger;
 	Node = (FISHLIST *)malloc(sizeof(FISHLIST));
 	Node->xDir = IRAND(RIGHT, LEFT);
 	Node->yDir = IRAND(UP, DOWN);
@@ -46,7 +48,8 @@ FISHLIST* LIST::createFish(int numberFish)
 	Node->FrameCounter = IRAND(0, 2);
 	Node->HungerBar[0] = (short *)malloc(fg_imagesiz(100, 10));
 	Node->HungerBar[1] = (short *)malloc(fg_imagesiz(100, 10));
-	Node->CurHunger = fish[Node->FishNum].MaxHunger;
+	Hunger = 0.75 * fish[Node->FishNum].MaxHunger;
+	Node->CurHunger = IRAND(Hunger, fish[Node->FishNum].MaxHunger);
 	// copy hungerbar image to buffer
 	fg_showpcx("Images/HungerBar.pcx", 0);
 	fg_move(0, 9);
@@ -58,7 +61,6 @@ void LIST::init(int hBackground, int hWork){
 	register int i;
 	FISHLIST *Node;
 	int nNodes;
-	int Hunger;
 
 	for (i = 0; i < 6; i++)
 		GetFish(i);
@@ -339,7 +341,6 @@ void LIST::AnimateFish(int hBackground, int hWork)
 
 void LIST::killFish(int numberFish)
 {
-	numberFish--;
 	FISHLIST* Test1, *Test2;
 	Test1 = head;
 	Test2 = (FISHLIST *)NULL;
@@ -354,6 +355,10 @@ void LIST::killFish(int numberFish)
 			}
 			else
 			{
+				if (Test1 == tail)
+				{
+					tail = Test2;
+				}
 				Test2->Next = Test1->Next;
 				break;
 			}
@@ -423,3 +428,65 @@ void LIST::iWannaKillSmbd(FISHLIST* killer)
 	}
 }
 
+void LIST::sereal(FISHLIST *a)
+{
+	std::ofstream fout("list.txt");
+	while (a != (FISHLIST*) NULL)
+	{
+		fout << a->FishNum << " " << a->x << " " << a->y << " " << a->xMin << " " << a->xMax << " " << a->xInc << " " << a->yMin << " " << a->yMax << " " << a->yInc << " " << a->Frame << " " << a->xDir << " " << a->yDir << " " << a->FishDir << " " << a->FrameCounter << " " << a->CurHunger << std::endl;
+		a = a->Next;
+	}
+	fout << "6" << std::endl;
+	fout.close();
+}
+
+FISHLIST* LIST::createFishlist(int numberFish, std::ifstream &fin)
+{
+	FISHLIST* a;
+	int Hunger;
+	a = (FISHLIST *)malloc(sizeof(FISHLIST));
+	a->FishNum = numberFish;
+	fin >> a->x >> a->y >> a->xMin >> a->xMax >> a->xInc >> a->yMin >> a->yMax >> a->yInc >> a->Frame >> a->xDir >> a->yDir >> a->FishDir >> a->FrameCounter >> a->CurHunger;
+	a->HungerBar[0] = (short *)malloc(fg_imagesiz(100, 10));
+	a->HungerBar[1] = (short *)malloc(fg_imagesiz(100, 10));
+	Hunger = 0.75 * fish[a->FishNum].MaxHunger;
+	fg_showpcx("Images/HungerBar.pcx", 0);
+	fg_move(0, 9);
+	fg_getdcb(a->HungerBar[0], 100, 10);
+	a->Next = (FISHLIST *)NULL;
+	return a;
+}
+
+void LIST::dereal()
+{	
+	std::ifstream fin("list.txt");
+	if (!fin.fail())
+	{
+		FISHLIST *NN;
+		while (head != (FISHLIST *)NULL)
+		{
+			NN = head->Next;
+			killFish(head);
+			head = NN;
+		}
+		tail = (FISHLIST *)NULL;
+		int a;
+		fin >> a;
+		while (a != 6)
+		{
+			FISHLIST* newFish = createFishlist(a, fin);
+			if (head == (FISHLIST *)NULL)
+			{
+				head = newFish;
+				tail = head;
+			}
+			else
+			{
+				tail->Next = newFish;
+				tail = newFish;
+			}
+			fin >> a;
+		}
+	}
+	fin.close();
+}
