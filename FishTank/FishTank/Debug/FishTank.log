@@ -1,4 +1,11 @@
 ﻿  list.cpp
-c:\users\zabey\documents\visual studio 2015\projects\battlefish\fishtank\fishtank\list.cpp(50): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\zabey\documents\visual studio 2015\projects\battlefish\fishtank\fishtank\list.cpp(51): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\zabey\documents\visual studio 2015\projects\battlefish\fishtank\fishtank\list.cpp(452): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  FishTank.cpp
+c:\users\zabey\documents\visual studio 2015\projects\battlefish\fishtank\fishtank\fishtank.cpp(166): warning C4101: 'Stream': unreferenced local variable
+c:\users\zabey\documents\visual studio 2015\projects\battlefish\fishtank\fishtank\fishtank.cpp(164): warning C4101: 'BuffSize': unreferenced local variable
+c:\users\zabey\documents\visual studio 2015\projects\battlefish\fishtank\fishtank\fishtank.cpp(167): warning C4101: 'i': unreferenced local variable
+  Generating Code...
+  LINK : C:\Users\Zabey\Documents\Visual Studio 2015\Projects\BattleFish\FishTank\Debug\FishTank.exe not found or not built by the last incremental link; performing full link
   FishTank.vcxproj -> C:\Users\Zabey\Documents\Visual Studio 2015\Projects\BattleFish\FishTank\Debug\FishTank.exe
   FishTank.vcxproj -> C:\Users\Zabey\Documents\Visual Studio 2015\Projects\BattleFish\FishTank\Debug\FishTank.pdb (Partial PDB)
