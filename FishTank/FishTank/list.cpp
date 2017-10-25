@@ -193,32 +193,27 @@ void LIST::AnimateFish(int hBackground, int hWork){
 	fg_clipdcb(HM, 1280 * i9Pressed, 32);
 
 	// display all the fish in the linked list
-	for (Node = head; Node != (FISHLIST *)NULL; Node = Node->Next)
-	{
+	for (Node = head; Node != (FISHLIST *)NULL;){
 		// blit the fish, may reverse while blitting
 		fg_move(Node->x, Node->y);
-		if (Node->xDir == fish[Node->FishNum].Direction)
-		{
+		if (Node->xDir == fish[Node->FishNum].Direction){
 			fg_clipdcb(fish[Node->FishNum].Bitmap[Node->Frame],
 				fish[Node->FishNum].FishWidth[Node->Frame],
 				fish[Node->FishNum].FishHeight[Node->Frame]);
 		}
-		else
-		{
+		else{
 			fg_flipdcb(fish[Node->FishNum].Bitmap[Node->Frame],
 				fish[Node->FishNum].FishWidth[Node->Frame],
 				fish[Node->FishNum].FishHeight[Node->Frame]);
 		}
 
 		// increment the horizontal position
-		if (Node->xDir == RIGHT)
-		{
+		if (Node->xDir == RIGHT){
 			Node->x += Node->xInc;
 			if (Node->x > Node->xMax)
 				Node->xDir = LEFT;
 		}
-		else
-		{
+		else{
 			Node->x -= Node->xInc;
 			if (Node->x < Node->xMin)
 				Node->xDir = RIGHT;
@@ -252,14 +247,21 @@ void LIST::AnimateFish(int hBackground, int hWork){
 			--(Node->CurHunger);
 		}
 		else{
-			this->killFish(Node);
+			FISHLIST * tmp = Node;
+			Node = Node->Next;
+			this->killFish(tmp);
+			continue;
 		};
 
 		++KillCount;
 		KillCount %= 1;
 		if (KillCount == 0) {
 			if ((Node->FishNum == 5) && (Node->CurHunger < fish[Node->FishNum].MaxHunger / 2)) {
-				iWannaKillSmbd(Node);
+				FISHLIST * tmp = Node->Next;
+				if (iWannaKillSmbd(Node)) {
+					Node = tmp;
+					continue;
+				}
 			}
 		}
 
@@ -281,6 +283,7 @@ void LIST::AnimateFish(int hBackground, int hWork){
 			}
 			Node->FrameCounter = 0;
 		}
+		Node = Node->Next;
 	}
 
 	// display the frame we just constructed
@@ -342,13 +345,15 @@ void LIST::addFish(int numberFish){
 	}
 }
 
-void LIST::iWannaKillSmbd(FISHLIST* killer){
+int LIST::iWannaKillSmbd(FISHLIST* killer){
+	int parametr = 0;
 	FISHLIST* it = head;
 	while (it != (FISHLIST*)NULL){
 		if ((killer != it) && (killer->Distance(it))){
 			if ((it->FishNum == 5) && (it->CurHunger < killer->CurHunger)){
 				this->killFish(killer);
 				it->CurHunger += 2000;
+				parametr = 1;
 				break;
 			}
 			else{
@@ -359,6 +364,7 @@ void LIST::iWannaKillSmbd(FISHLIST* killer){
 		}
 		it = it->Next;
 	}
+	return parametr;
 }
 
 void LIST::sereal(FISHLIST *a){

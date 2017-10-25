@@ -1,5 +1,8 @@
 ﻿  list.cpp
 c:\users\антон\documents\github\battlefish\fishtank\fishtank\list.cpp(45): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-c:\users\антон\documents\github\battlefish\fishtank\fishtank\list.cpp(382): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+c:\users\антон\documents\github\battlefish\fishtank\fishtank\list.cpp(388): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+  Создание кода...
+  Пропуск... (изменения не обнаружены)
+  FishTank.cpp
   FishTank.vcxproj -> C:\Users\Антон\Documents\GitHub\BattleFish\FishTank\Debug\FishTank.exe
   FishTank.vcxproj -> C:\Users\Антон\Documents\GitHub\BattleFish\FishTank\Debug\FishTank.pdb (Partial PDB)

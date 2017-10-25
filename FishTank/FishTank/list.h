@@ -13,7 +13,7 @@ public:
 	void killFish(int);
 	void killFish(FISHLIST *);
 	void addFish(int);
-	void iWannaKillSmbd(FISHLIST *);
+	int iWannaKillSmbd(FISHLIST *);
 	void FeedFish();
 	void sereal(FISHLIST *);
 	FISHLIST* createFishlist(int, std::ifstream &);
